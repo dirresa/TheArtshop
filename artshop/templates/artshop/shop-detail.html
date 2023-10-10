@@ -1,0 +1,132 @@
+{% extends 'artshop/_Master.html' %} 
+{% block title_tab %} {{ product }}{% endblock %}
+{% load static %}
+{% load humanize %}
+{% load mathfilters %}
+
+{% block main_content %}  
+
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>{{ product }}</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'artshop:danh_muc' 0 %}">Shop</a></li>
+                        <li class="breadcrumb-item active"> Details </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start Shop Detail  -->
+    <div class="shop-detail-box-main">
+        <div class="container">
+            <div class="shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-6">
+                        <img class="d-block w-100 img-fluid" src="{{ product.image.url }}" alt="{{ product }}">
+                    </div>
+
+                    <div class="col-xl-6">
+                        <div class="col-md-12 text-right">
+                            <p style="margin: 15px 20px 0 0">Views: {{ product.viewed }}</p>
+                        </div>
+                        
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="single-product-details" style="width: 500px; height:400px; text-align:left">
+                                <h2> {{ product }} </h2>
+                                <h3> Artist: {{ product.artist }} </h3>
+                                <h3> Category: {{ product.category }} </h3>
+                                <h5> ${{ product.price|floatformat:0|intcomma }} </h5>
+                                    <p>
+                                        <li>
+                                            <div class="form-group quantity-box" style="width:100px">
+                                                <label class="control-label">Quantity</label>
+                                                <input class="form-control" value="{{ quantity }}" min="0" type="number" name="quantity">
+                                            </div>
+                                        </li>
+                                    
+                                        <div class="action">
+                                            <div class="cart-and-bay-btn">
+                                                <button class="btn hvr-hover" data-fancybox-close="" href="#" type="submit" name="btnThemVaoGioHang" value="Thêm vào giỏ hàng" style="font-size:20px; color: white;">Add to cart</button>
+                                            </div>
+                                        </div>
+                                    </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="row my-5">
+                <div class="col-lg-12">
+                    <div class="title-all text-center">
+                        <h1>Related Products</h1>
+                        {% comment %} <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet lacus enim.</p> {% endcomment %}
+                    </div>
+                    <div class="featured-products-box owl-carousel owl-theme">
+                        {% for product in related_products %}
+                            <div class="item">
+                                <div class="products-single fix">
+                                    <div class="box-img-hover">
+                                        <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product }}" 
+                                        style="object-fit:cover;
+                                        object-position: middle;
+                                        width:300px;
+                                        height:300px;">
+                                        <div class="mask-icon">
+                                            <ul>
+                                                <li><a class=" btn hvr-hover" href="{% url 'artshop:chi_tiet_san_pham' product.pk %}" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                                <li>
+                                                    <form method="POST" action="{% url 'wishlist:them_vao_wishlist' product.pk %}">
+                                                        {% csrf_token %}
+                                                        <button class="btn hvr-hover " type="submit" name="btnThemVaoWishlist{{product.pk}}" value="{{ product }}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist">                                                                     
+                                                            <i class="far fa-heart " style="color:white"></i>                                                                        
+                                                            <input type="hidden" name="quantity{{ product.pk }}" value=1>
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+
+                                            <style>
+                                                .bottomright {
+                                                    position: absolute;
+                                                    bottom: 0px;
+                                                    right: 0px;
+                                                    font-size: 18px;
+                                                    color: white
+                                                  }
+                                            </style>
+                                            <form method="POST" action="{% url 'cart:mua_ngay' product.pk %}">
+                                                {% csrf_token %}
+                                                <a class="cart" href="#">     
+                                                    <button class="bottomright btn hvr-hover" type="submit" name="btnMuaNgay{{product.pk}}" value="{{ product }}">
+                                                        Buy now
+                                                    </button>
+                                                </a>
+                                                <input type="hidden" name="quantity{{ product.pk }}" value=1>
+                                            </form>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="why-text" style= "height:150px">
+                                        <a class="font-weight-bold" href="{% url 'artshop:chi_tiet_san_pham' product.pk %}" style="text-align:left; font-size: 17px">{{ product }}</a>
+                                        <h5 style="color: red"><span>$</span>{{ product.price|floatformat:0|intcomma }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End Cart -->
+
+{% endblock %}  

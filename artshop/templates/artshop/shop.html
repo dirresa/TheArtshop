@@ -1,0 +1,241 @@
+{% extends 'artshop/_Master.html' %} 
+{% block title_tab %} {{ title_category }} {% endblock %}
+{% load static %}
+{% load humanize %}
+{% load mathfilters %}
+
+{% block main_content %}  
+
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="{% url 'artshop:danh_muc' 0 %}">
+                        <h2 >Shop</h2>
+                    </a>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'artshop:trang_chu' %}">Home</a></li>
+                        <li class="breadcrumb-item active">{{ title_category }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start Shop Page  -->
+    <div class="shop-box-inner">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-3 col-lg-3 col-sm-12 col-xs-12 sidebar-shop-left">
+                    <div class="product-categori">
+                        <div class="filter-sidebar-left">
+                            <div class="title-left">
+                                <h3>Search</h3>
+                            </div>
+                            <div class="search-product">
+                                <form method="get" action="{% url 'artshop:tim_kiem' %}">
+                                    <input class="form-control" name="tu_khoa" value="{{ keyword }}" placeholder="Search..." autocomplete="off" type="text">
+                                    <button type="submit"> <i class="fa fa-search"></i> </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="filter-sidebar-left">
+                            <div class="title-left">
+                                <h3>Categories</h3>
+                            </div>
+
+                            {% for category in categories %}
+                            <div class="list-group list-group-collapse list-group-sm list-group-tree" id="list-group-men" data-children=".sub-men">
+                                <a href="{% url 'artshop:danh_muc' category.pk%}" class="list-group-item list-group-item-action"> {{category}} </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="sort-price-left">
+                            <div class="title-left">
+                                <h3>Sort by</h3>
+                            </div>
+                            <form method="GET">
+                                <div class="col-md-3">
+                                    <div class="product-price-range">
+                                        <div class="dropdown">
+                                            <div class="toolbar-sorter-right">
+                                                <select id="basic" class="selectpicker show-tick " data-placeholder="$ USD" name="gia" required="">
+                                                    <option class="dropdown-item" value="">Price filter</option>
+                                                    <option class="dropdown-item" value="0-20" {% if range_gia == '0-20' %} selected {%endif%} >$0 - $20</option>
+                                                    <option class="dropdown-item" value="20-50" {% if range_gia == '20-50' %} selected {%endif%}>$20 - $50</option>
+                                                    <option class="dropdown-item" value="50-100" {% if range_gia == '50-100' %} selected {%endif%}>$50 - $100</option>
+                                                    <option class="dropdown-item" value="100-500" {% if range_gia == '100-500' %} selected {%endif%}>$100 - $500</option>
+                                                    <option class="dropdown-item" value="500-" {% if range_gia == '500-' %} selected {%endif%}>Over $500</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-md-1">
+                                    <button type="submit" class="btn hvr-hover" style="color:white ">Filter</button>
+                                    <input type="hidden" name="tu_khoa" value="{{ keyword }}">
+                                </div>
+                            </form>
+                        </div>
+
+                        
+
+                    </div>
+                </div>
+
+                <div class="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
+                    <div class="right-product-box">
+                        <h1>{{ title_category }}:</h1>
+
+                        <div class="row product-categorie-box">
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade show active" id="grid-view">
+                                    <div class="row">
+
+                                        {% for product in products_pager %}
+                                        <div class="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                            <div class="products-single fix">
+                                                <div class="box-img-hover">
+                                                    <div class="type-lb">
+                                                        <p class="sale">Sale</p>
+                                                    </div>
+                                                    <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product }}"
+                                                        style="object-fit:cover;
+                                                                object-position: middle;
+                                                                width:300px;
+                                                                height:300px;">
+                                                    
+                                                    <div class="mask-icon">
+                                                        <ul>
+                                                            <li><a class=" btn hvr-hover" href="{% url 'artshop:chi_tiet_san_pham' product.pk %}" data-toggle="tooltip" data-placement="right" title="View"><i class="fas fa-eye"></i></a></li>
+                                                            <li>
+                                                                <form method="POST" action="{% url 'wishlist:them_vao_wishlist' product.pk %}">
+                                                                    {% csrf_token %}
+                                                                    <button class="btn hvr-hover " type="submit" name="btnThemVaoWishlist{{product.pk}}" value="{{ product }}" data-toggle="tooltip" data-placement="right" title="Add to Wishlist">                                                                     
+                                                                        <i class="far fa-heart " style="color:white"></i>                                                                        
+                                                                        <input type="hidden" name="quantity{{ product.pk }}" value=1>
+                                                                    </button>
+                                                                </form>
+                                                            </li>
+                                                        </ul>
+
+                                                        <style>
+                                                            .bottomright {
+                                                                position: absolute;
+                                                                bottom: 0px;
+                                                                right: 0px;
+                                                                font-size: 18px;
+                                                                color: white
+                                                              }
+                                                        </style>
+
+                                                        <form method="POST" action="{% url 'cart:mua_ngay' product.pk %}">
+                                                            {% csrf_token %}
+                                                            <a class="cart" href="#">     
+                                                                <button class="bottomright btn hvr-hover" type="submit" name="btnMuaNgay{{product.pk}}" value="{{ product }}">
+                                                                    Buy now
+                                                                </button>
+                                                            </a>
+                                                            <input type="hidden" name="quantity{{ product.pk }}" value=1>
+                                                        </form>
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="why-text" style= "height:150px">
+                                                    <a class="font-weight-bold" href="{% url 'artshop:chi_tiet_san_pham' product.pk %}" style="text-align:left; font-size: 17px">{{ product }}</a>
+                                                    <h5 style="color: red"><span>$</span>{{ product.price|floatformat:0|intcomma }}</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+
+                                        <!-- Pagination Start -->
+                                        {% if products_pager.paginator.num_pages > 1 %}
+                                        <div class="col-md-12">
+                                            <nav aria-label="Page navigation example">
+                                                <ul class="pagination justify-content-center">
+                                                    
+                                                    <!-- Trước -->
+                                                    {% if products_pager.has_previous %}
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?trang={{ products_pager.previous_page_number }}{% if request.GET.tu_khoa %}&tu_khoa={{ request.GET.tu_khoa }}{% endif %}" tabindex="-1">Previous</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="page-item disabled">
+                                                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                                        </li>
+                                                    {% endif %}
+                                                    <!-- -->
+
+                                                    <!-- ... ở các trang đầu -->
+                                                    {% if products_pager.number > 3 %}    
+                                                        <li class="page-item disabled">
+                                                            <a class="page-link" href="#" tabindex="-1">...</a>
+                                                        </li>
+                                                    {% endif %}
+                                                    <!-- -->
+
+                                                    <!-- các trang số -->
+                                                    {% for i in products_pager.paginator.page_range %}
+                                                        {% if i < products_pager.number|add:3 %}
+                                                            {% if i > products_pager.number|sub:3 %}
+                                                                {% if products_pager.number == i %}
+                                                                    <li class="page-item active">
+                                                                        <a class="page-link" href="?trang={{ i }}{% if request.GET.tu_khoa %}&tu_khoa={{ request.GET.tu_khoa }}{% endif %}">{{ i }}</a>
+                                                                    </li>
+                                                                {% else %}
+                                                                    <li class="page-item">
+                                                                        <a class="page-link" href="?trang={{ i }}{% if request.GET.tu_khoa %}&tu_khoa={{ request.GET.tu_khoa }}{% endif %}">{{ i }}</a>
+                                                                    </li>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <!-- -->
+
+                                                    <!-- ... ở các trang sau -->
+                                                    {% if products_pager.number < products_pager.paginator.num_pages|sub:3 %}    
+                                                        <li class="page-item disabled">
+                                                            <a class="page-link" href="#" tabindex="-1">...</a>
+                                                        </li>
+                                                    {% endif %}
+                                                    <!-- -->
+
+                                                    <!-- Sau -->
+                                                    {% if products_pager.has_next %}
+                                                        <li class="page-item">
+                                                            <a class="page-link" href="?trang={{ products_pager.next_page_number }}{% if request.GET.tu_khoa %}&tu_khoa={{ request.GET.tu_khoa }}{% endif %}">Next</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="page-item disabled">
+                                                            <a class="page-link" href="#">Next</a>
+                                                        </li>
+                                                    {% endif %}
+                                                    <!-- -->
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                        {% endif %}
+                                        <!-- Pagination End -->
+                                        
+                                    </div>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Shop Page -->
+
+{% endblock %}  
+ 

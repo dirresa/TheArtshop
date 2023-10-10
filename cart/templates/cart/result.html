@@ -1,0 +1,37 @@
+{% extends 'artshop/_Master.html' %}
+{% load static %}
+{% load humanize %}
+{% block title_tab %}TheArtshop | Order{% endblock %}
+
+{% block main_content %}
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Order</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'artshop:trang_chu' %}">Home</a></li>
+                        <li class="breadcrumb-item active">Order</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Checkout Start -->
+    <div class="checkout">
+        <div class="container-fluid">
+            <div class="text-center">
+                <br></br>
+                <img class="img-fluid" src="{% static 'artshop/images/3144456.png' %}" alt="" />
+                <p style="font-size: 50px; text-align: center">Order successfully!</p>
+                <p style="font-size: 50px; text-align: center">Thank you for ordering.</p>
+                <br>
+            </div>
+        </div>
+    </div>
+    <!-- Checkout End -->
+
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends 'artshop/_Master.html' %} 
+{% block title_tab %} Cart {% endblock %}
+{% load static %}
+{% load humanize %}
+
+{% block main_content %}  
+
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Cart</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'artshop:trang_chu' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'artshop:danh_muc' 0 %}">Shop</a></li>
+                        <li class="breadcrumb-item active">Cart</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start Cart  -->
+    <div class="cart-box-main">
+        <div class="container">
+            <div class="shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="row">
+                    <div class="col-lg-12">
+                        {% if cart|length > 0 %}
+                            <div class="table-main table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th>Image</th>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Total</th>
+                                            <th>Remove</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for c in cart %}
+                                            <tr>
+                                                <th scope="row">{{ forloop.counter }}</th>
+                                                <td class="thumbnail-img">
+                                                    <img class="img-fluid" src="{{ c.product.image.url }}" alt="{{ c.product.name }}" />
+                                                </td>
+
+                                                <td class="name-pr">
+                                                    <p>{{ c.product.name }}</p>
+                                                </td>
+
+                                                <td class="quantity-box"><input type="number" size="4" value="{{ c.quantity }}" id="quantity1{{ c.product.pk }}" name="quantity1{{ c.product.pk }}" step="1" class="c-input-text qty text"></td>
+                                                
+                                                <td class="price-pr">
+                                                    <p>${{ c.price|floatformat:0|intcomma }}</p>
+                                                </td>
+
+                                                <td class="total-pr">
+                                                    <p>${{ c.total_price|floatformat:0|intcomma }}</p>
+                                                </td>
+
+                                                
+                                                <td class="remove-pr">
+                                                    <buttontype="button" data-toggle="modal" data-target="#sp{{ c.product.pk }}">
+                                                        <a href="#">
+                                                            <i class="fas fa-times"></i>
+                                                        </a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="sp{{ c.product.pk }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Remove from cart</h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <b>"{{ c.product.name }}"</b> will be deleted. Do you agree?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form method="POST" action="{% url 'cart:xoa_san_pham' c.product.pk %}">
+                                                                {% csrf_token %}
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                                                <button type="submit" class="btn btn-primary">Agree</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End Modal -->
+                                        {% endfor %}
+                                        
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                        <p style="font-size: 50px; text-align: center">
+                            Your cart is currently empty!
+                        </p>
+                        {% endif %}   
+                    </div>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="update-box">
+                        <div class="col-12 d-flex shopping-box">
+                            <a type="button" class="btn hvr-hover center mr-auto ml-auto" href="{% url 'artshop:trang_chu' %}" style="font-size: 20px; color: white">Buy more product</a>
+                            <button type="submit" name="btnCapNhatGioHang" value=" Cập nhật giỏ hàng" class="btn hvr-hover center mr-auto ml-auto" style="font-size: 20px; color: white">
+                                Update Cart
+                            </button>
+                            {% for c in cart %}
+                                <input type="hidden" value="{{ c.quantity }}" id="quantity2{{ c.product.pk }}" name="quantity2{{ c.product.pk }}">
+                                <script>
+                                    $(document).ready(function () {
+                                        $("#quantity1{{ c.product.pk }}").change(function () {
+                                            let so_luong = $("#quantity1{{ c.product.pk }}").val();
+                                            $("#quantity2{{ c.product.pk }}").val(so_luong);
+                                        });
+                                    });
+                                    $(document).ready(function () {
+                                        $("#btn-minus-{{ c.product.pk }}").click(function () {
+                                            let so_luong = $("#quantity1{{ c.product.pk }}").val();
+                                            $("#quantity2{{ c.product.pk }}").val(so_luong);
+                                        });
+                                    });
+                                    $(document).ready(function () {
+                                        $("#btn-plus-{{ c.product.pk }}").click(function () {
+                                            let so_luong = $("#quantity1{{ c.product.pk }}").val();
+                                            $("#quantity2{{ c.product.pk }}").val(so_luong);
+                                        });
+                                    });
+                                </script>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="row my-5">
+                    {% comment %} <div class="col-lg-8 col-sm-12"> {% endcomment %}
+                        <div class="col-lg-6 col-sm-6">
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="coupon-box">
+                                    <h2>Apply coupon code</h2>
+                                    <div class="input-group input-group-sm">
+                                        <input class="form-control" placeholder="Enter your coupon code" aria-label="Coupon code" type="text" name="ma_giam_gia" value={{ ma_giam_gia }}>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-theme" type="submit" name="btnMaGiamGia" value="Mã giảm giá">Apply Coupon</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    {% comment %} </div> {% endcomment %}
+                    <div class="col-lg-5">
+                        <div class="order-box">
+                            <h2>Order summary</h2>
+
+                            <div class="d-flex">
+                                <h4>Sub Total</h4>
+                                <div class="ml-auto font-weight-bold"> ${{ cart.get_total_price|floatformat:0|intcomma }}</div>
+                            </div>
+                            <hr class="my-1">
+                            <div class="d-flex">
+                                <h4>Coupon Discount</h4>
+                                <div class="ml-auto font-weight-bold"> ${{ cart.get_discount|floatformat:0|intcomma }} </div>
+                            </div>
+                            <hr class="my-1">
+                            <div class="d-flex">
+                                <h4>Tax</h4>
+                                <div class="ml-auto font-weight-bold"> $0 </div>
+                            </div>
+                            <hr class="my-1">
+                            <div class="d-flex">
+                                <h4>Shipping Cost</h4>
+                                <div class="ml-auto font-weight-bold"> Free </div>
+                            </div>
+                            <hr>
+                            <div class="d-flex gr-total">
+                                <h5>Grand Total</h5>
+                                <div class="ml-auto h5"> ${{ cart.get_final_total_price|floatformat:0|intcomma }}</div>
+                            </div>
+                            <hr> </div>
+                            <div class="col-12 d-flex shopping-box"><a href="{% url 'cart:thanh_toan'%}" class="ml-auto btn hvr-hover">Checkout</a> </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <!-- End Cart -->
+
+{% endblock %}  

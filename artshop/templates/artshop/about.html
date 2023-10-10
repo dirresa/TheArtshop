@@ -1,0 +1,74 @@
+{% extends 'artshop/_Master.html' %} 
+{% block title_tab %} About us {% endblock %}
+{% load static %}
+{% load humanize %}
+
+{% block main_content %}  
+
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>ABOUT US</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'artshop:trang_chu' %}">Home</a></li>
+                        <li class="breadcrumb-item active">ABOUT US</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start About Page  -->
+    <div class="about-box-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="noo-sh-title">We are <span>TheArtshop</span></h2>
+                    ~ TheArtshop Project by TND ~
+                    <br> </br>
+                    Every artist, beginner or professional, will need a little pick-me-up once in a while, to get over a bad piece of work they thought would turn out well or to overcome artist’s block. Here are my 101 favourite inspirational art quotes, from painters to philosophers, from scientists to photographers.
+                    <br> </br>
+                    While drawing I discover what I really want to say. ―  Dario Fo
+                    <br> </br>
+                    “No great artist ever sees things as they really are. If he did, he would cease to be an artist.” - Oscar Wilde
+                    <br> </br>
+                    “I want to touch people with my art. I want them to say, ‘he feels deeply, he feels tenderly.” - Vincent Van Gogh
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="banner-frame"> <img class="img-thumbnail img-fluid" src="{% static 'artshop/images/hehe.jpg' %}" alt="" />
+                    </div>
+                </div>
+            </div>
+            <div class="row my-5">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="service-block-inner">
+                        <h3>We are Coding</h3>
+                        <p>This is what I need.</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-4">
+                    <div class="service-block-inner">
+                        <h3>We are Art</h3>
+                        <p>This is what I love.</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-4">
+                    <div class="service-block-inner">
+                        <h3>We are Combination</h3>
+                        <p>This is the most perfect combination.</p>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+    <!-- End About Page -->
+
+{% endblock %}   

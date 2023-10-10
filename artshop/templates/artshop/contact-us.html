@@ -1,0 +1,103 @@
+{% extends 'artshop/_Master.html' %} 
+{% block title_tab %} Contact us {% endblock %}
+{% load static %}
+{% load humanize %}
+
+{% block main_content %}  
+
+    <!-- Start All Title Box -->
+    <div class="all-title-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2>Contact Us</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'artshop:trang_chu' %}">Home</a></li>
+                        <li class="breadcrumb-item active"> Contact Us </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Title Box -->
+
+    <!-- Start Contact Us  -->
+    <div class="contact-box-main">
+        <div class="container">
+            <div class="shadow-lg p-3 mb-5 bg-white rounded">
+                <div class="row">
+                    <div class="col-lg-4 col-sm-12">
+                        <div class="contact-info-left">
+                            <h2>CONTACT INFO</h2>
+                            <p>TheArtshop Project by TND </p>
+                            <ul>
+                                <li>
+                                    <p><i class="fas fa-map-marker-alt"></i>Address: 227 Đường Nguyễn Văn Cừ <br>Phường 4, Quận 5, TPHCM,<br> Việt Nam. </p>
+                                </li>
+                                <li>
+                                    <p><i class="fas fa-phone-square"></i>Phone: 0979791008 </p>
+                                </li>
+                                <li>
+                                    <p><i class="fas fa-envelope"></i>Email: tranngocdung230506@gmail.com</p>
+                                </li>
+                            </ul>
+
+                            <div class="col-lg-4 text-center" >
+                                <div class="contact-map">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6358630482546!2d106.6797459108329!3d10.762521589341159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f1bfc262bf1%3A0x4e843897f2900135!2zMjI3IMSQLiBOZ3V54buFbiBWxINuIEPhu6ssIFBoxrDhu51uZyA0LCBRdeG6rW4gNSwgVGjDoG5oIHBo4buRIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1681565610229!5m2!1svi!2s"> </iframe>
+                                    {% comment %} frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                    
+                    
+                    <div class="col-lg-8 col-sm-12">
+                        <div class="contact-form-right">
+                            <h2>GET IN TOUCH</h2>
+                            <p>ArtshopProject by TND</p>
+
+                            <form class="row" id="fh5co_contact_form" method="POST">
+                                {% csrf_token %}
+
+                                <div class="col-md-12">
+                                    {{ ket_qua_lien_he|safe }}
+                                </div>
+
+                                <div class="col-12 py-3">
+                                    <label> Name </label>
+                                    {{ form.name }}
+                                </div>
+            
+                                <div class="col-6 py-3">
+                                    <label> Email </label>
+                                    {{ form.email }}
+                                </div>
+            
+                                <div class="col-6 py-3">
+                                    <label> Subject </label>
+                                    {{ form.subject }}
+                                </div>
+            
+                                <div class="col-12 py-3">
+                                    <label> Message </label>
+                                    {{ form.message }}
+                                </div>
+            
+                                <div class="col-12 py-3 text-center"> 
+                                    <button type="submit" name="btnSend" value="Send Message" class="btn  hvr-hover contact_btn" style="color:white; font-size: 22px">Send Message</button> 
+                                </div>
+            
+
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Cart -->
+{% endblock %}  
